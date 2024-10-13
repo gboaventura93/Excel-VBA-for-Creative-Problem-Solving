@@ -1,0 +1,18 @@
+Option Explicit
+Function medication(C_0 As Double, t As Double, k As Double) As Double
+Dim e As Double
+
+e = Exp(-k * t)
+medication = C_0 * e
+
+End Function
+
+Function payment(P As Double, i As Double, n As Integer) As Double
+Dim num As Double
+Dim den As Double
+
+num = P * (i / 12)
+den = 1 - (1 + (i / 12)) ^ (-n * 12)
+payment = FormatNumber(num / den, 2)
+
+End Function
