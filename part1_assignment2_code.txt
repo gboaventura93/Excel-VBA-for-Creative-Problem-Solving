@@ -1,0 +1,39 @@
+Option Explicit
+
+Sub AddNumbersA()
+Dim x As Double
+x = InputBox("Please enter a number: ")
+Range("G12") = x + Range("D4")
+End Sub
+
+Sub AddNumbersB()
+Dim x As Double
+x = InputBox("Please enter a number: ")
+ActiveCell(-2, 3) = x + ActiveCell
+End Sub
+
+Sub WherePutMe()
+
+Dim x As Integer
+Dim y As String
+Dim z As Variant
+    
+    x = InputBox("Row number: ")
+    y = InputBox("Column letter: ")
+    z = Selection.Cells(2, 2)
+    
+    Range(y & x) = z
+End Sub
+
+Sub Swap()
+    Dim x1 As Range
+    Dim x2 As Range
+    Dim temp As Variant
+    
+    Set x1 = Selection.Cells(1, 1)
+    Set x2 = Selection.Cells(1, 2)
+    
+    temp = x1
+    x1 = x2
+    x2 = temp
+End Sub
