@@ -1,0 +1,44 @@
+Option Explicit
+Sub HighlightRows()
+Call Reset
+
+Dim nr As Integer, i As Integer
+Dim id_identifier As String
+Dim id_key As Integer
+Dim identifierVal As String
+Dim keyVal As Integer
+
+nr = WorksheetFunction.CountA(Columns("A:A")) - 1
+identifierVal = Range("identifier")
+keyVal = Range("key")
+
+For i = 1 To nr
+id_identifier = Identifier(Range("A" & i + 1))
+id_key = Key(Range("A" & i + 1))
+    If id_identifier = identifierVal And id_key = keyVal Then Range("A" & i + 1 & ":C" & i + 1).Interior.ColorIndex = 4
+Next i
+End Sub
+
+Sub Example()
+' This is just to show how the Identifier and Key functions below can be utilized in VBA code
+Dim ID As String
+ID = "Y4-824X"
+MsgBox "The identifier is " & Identifier(ID) & " and the key is " & Key(ID)
+End Sub
+
+Function Identifier(ID As String) As String
+Identifier = Left(ID, 1)
+End Function
+
+Function Key(ID As String) As Integer
+Key = Left(Mid(ID, 4, 4), 1)
+End Function
+
+Sub Reset()
+' Obtained through a macro recording:
+With Cells.Interior
+    .Pattern = xlNone
+    .TintAndShade = 0
+    .PatternTintAndShade = 0
+End With
+End Sub
