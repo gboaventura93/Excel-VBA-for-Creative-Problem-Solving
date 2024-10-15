@@ -1,0 +1,84 @@
+Option Explicit
+
+Sub Cookies()
+Dim wsData As Worksheet
+    Dim wsMonthlySales As Worksheet
+    Dim wsCookieSales As Worksheet
+    Dim seller As String
+    Dim cookieName As String
+    Dim lastRowData As Long
+    Dim lastRowMonthlySales As Long
+    Dim lastRowCookieSales As Long
+    Dim totalQuantity As Double
+    Dim i As Long
+
+    Set wsData = ThisWorkbook.Sheets(February)
+    Set wsMonthlySales = ThisWorkbook.Sheets(February)
+    Set wsCookieSales = ThisWorkbook.Sheets(February)
+
+  
+    lastRowData = wsData.Cells(wsData.Rows.Count, 1).End(xlUp).Row
+
+    
+    lastRowMonthlySales = wsMonthlySales.Cells(wsMonthlySales.Rows.Count, 8).End(xlUp).Row
+
+    ' Loop through each seller name in the Monthly Sales table
+    For i = 6 To lastRowMonthlySales
+        seller = wsMonthlySales.Cells(i, 8).Value
+        totalQuantity = 0
+
+        ' Check if the seller name is not empty
+        If seller   Then
+            
+            Dim j As Long
+            For j = 2 To lastRowData
+                
+                If wsData.Cells(j, 1).Value = seller Then
+                    
+                    totalQuantity = totalQuantity + wsData.Cells(j, 6).Value
+                End If
+            Next j
+
+            
+            wsMonthlySales.Cells(i, 9).Value = totalQuantity ' Column I (9)
+        End If
+    Next i
+
+    ' pt2. Cookies
+    lastRowCookieSales = wsCookieSales.Cells(wsCookieSales.Rows.Count, 8).End(xlUp).Row
+
+    
+    For i = 14 To lastRowCookieSales
+        cookieName = wsCookieSales.Cells(i, 8).Value
+        totalQuantity = 0
+
+        
+        If cookieName   Then
+            
+            Dim k As Long
+            For k = 6 To lastRowData
+                
+                If wsData.Cells(k, 3).Value = cookieName Then
+                    
+                    totalQuantity = totalQuantity + wsData.Cells(k, 4).Value
+                End If
+            Next k
+
+            
+            wsCookieSales.Cells(i, 9).Value = totalQuantity
+        End If
+    Next i
+
+Range(I11).Formula2R1C1 = =SUM(R[-5]CR[-1]C)
+Range(I6I11).Select
+    Selection.NumberFormat = _- #,##0.0_-;- #,##0.0_-;_- -_-;_-@_-
+    Selection.NumberFormat = _- #,##0_-;- #,##0_-;_- -_-;_-@_-
+End Sub
+Sub Reset()
+'Do not modify or delete this sub
+Sheets(Original Data).Columns(AF).Copy Sheets(February).Columns(AF)
+With Sheets(February)
+    .Range(I6I11).ClearContents
+    .Range(I14I16).ClearContents
+End With
+End Sub
