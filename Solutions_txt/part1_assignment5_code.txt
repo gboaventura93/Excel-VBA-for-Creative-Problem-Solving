@@ -1,0 +1,46 @@
+Option Explicit
+
+Sub FormatAndIncompleteOrders()
+Dim dataRange As Range
+
+' 1) Formating cells
+Set dataRange = Range("A4").CurrentRegion.Offset(1, 0)
+With dataRange
+        .Font.Size = 11
+        .Font.Underline = xlUnderlineStyleNone
+        .Font.Bold = False
+        .Font.Italic = False
+        .Font.ColorIndex = xlAutomatic
+End With
+
+' 2) Delete the blank stores
+Range("A4").AutoFilter Field:=2, Criteria1:=""
+Range("A4").CurrentRegion.Offset(1).EntireRow.Delete
+Range("A4").AutoFilter
+Range("A4").Select
+
+' 3) Pasting the Incomplete Orders
+Range("A4").AutoFilter Field:=3, Criteria1:=""
+Sheets("New Orders").Range("A3").CurrentRegion.Copy Destination:=Sheets("Incomplete Orders").Range("A1")
+Range("A4").AutoFilter
+
+'4) Excluding the Incomplete Orders from New Orders
+Range("A4").AutoFilter Field:=3, Criteria1:=""
+Range("A4").CurrentRegion.Offset(1).EntireRow.Delete
+Range("A4").AutoFilter
+Range("A4").Select
+End Sub
+Sub Report()
+
+Range("A4").AutoFilter Field:=2, Criteria1:=Range("H10")
+Sheets("New Orders").Range("A3").CurrentRegion.Copy Sheets("Report").Range("A1")
+Range("A4").AutoFilter
+
+End Sub
+
+Sub Reset()
+'Do NOT modify or delete this sub!
+Sheets("Original Data").Columns("A:D").Copy Sheets("New Orders").Columns("A:D")
+Sheets("Report").Cells.Clear
+Sheets("Incomplete Orders").Cells.Clear
+End Sub
